@@ -1,0 +1,196 @@
+<!--
+
+  TO add or remove deadlines just edit each entry in the deadlines on array on line 39 in the following format:
+    newDeadline(Deadline name , date due* , spanid**)
+    * -> format: "mmm dd, yyyy, hh:mm:ss"
+    ** -> Span id -> this is only ever set here and then refrenced from here so can be anything that isnt
+      already in use
+
+ -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>New Tab</title>
+    <style>
+      .DLDeadlineP{
+        cursor: pointer;
+      }
+      .DLName{
+        font-weight: bold;
+      }
+      body{
+        font-family: Arial;
+      }
+      #countdownArea{
+        text-align: center;
+      }
+      h1{
+        text-align: center;
+      }
+      #netflixImg{
+        height: 75px;
+        width: 100px;
+      }
+      #youtubeImg{
+        height: 73px;
+        width: 73px;
+        padding-right: 10px;
+      }
+      #amazonImg{
+        height: 75px;
+        width: 75px;
+        padding-right: 10px;
+      }
+      #redditImg{
+        height: 75px;
+        width: 75px;
+        padding-right: 10px;
+      }
+      #messengerImg{
+        height: 75px;
+        width: 75px;
+        padding-right: 10px;
+      }
+      #blackboardImg{
+        height: 85px;
+        width: 85px;
+        padding-right: 10px;
+      }
+      table{
+        padding-top: 75px;
+      }
+      #websiteHover{
+        text-align: center;
+        color: rgb(154, 154, 154);
+      }
+      #steamImg{
+        height: 75px;
+        width: 75px;
+      }
+      #outlookImg{
+        height: 75px;
+        width: 75px;
+      }
+      #gcImg{
+        height: 75px;
+        width: 75px;
+      }
+      #googleImg{
+        height: 70px;
+        width: 70px;
+        padding-left: 10px;
+      }
+      #hbImg{
+        height: 70px;
+        width: 70px;
+        padding-left: 15px;
+      }
+      #chronoImg{
+        height: 75px;
+        width: 75px;
+      }
+      #googleSearchBar{
+        height: 30px;
+        width: 99%;
+        font-size: 15pt;
+      }
+    </style>
+    <script>
+      var infomaticsDL = new Date("may 21, 2018, 13:00:00");
+      // alert(infomaticsDL);
+      function newDeadline(name, dl, span){
+        var obj = {};
+        obj.name = name;
+        obj.dl = dl;
+        obj.spanId = span;
+        return obj;
+      }
+
+      var deadlines = [
+        // newDeadline("Infomatics",new Date("may 21, 2018, 13:00:00"),"infomaticsDLArea"),
+        // newDeadline("HCI",new Date("may 23, 2018, 09:00:00"),"hciDLArea"),
+        // newDeadline("TOC",new Date("may 25, 2018, 09:00:00"),"tocDLArea"),
+        // newDeadline("CNPC",new Date("may 29, 2018, 09:00:00"),"cnpcDLArea"),
+        // newDeadline("ADS",new Date("may 31, 2018, 09:00:00"),"adsDLArea")
+        ];
+      function writeCountDownArea(){
+        var deadlinesToBePrinted = "";
+        for(n=0;n<deadlines.length;n++){
+          deadlinesToBePrinted += "<p><span class='DLDeadlineP' title='Show date' onclick='DLTitleCLick(" + n + ")'><span class='DLName' >" + deadlines[n].name + ": </span><span id='" + deadlines[n].spanId + "'></span></span></p>";
+        }
+        document.getElementById("countdownArea").innerHTML = deadlinesToBePrinted;
+      }
+      var x = setInterval(function(){
+        var now = new Date().getTime();
+        for(i=0; i<deadlines.length; i++){
+          var distance = deadlines[i].dl.getTime() - now;
+          if(distance<0){
+            document.getElementById(deadlines[i].spanId).innerHTML = "Deadline Passed";
+            document.getElementById(deadlines[i].spanId).style = "color :rgb(58, 181, 55); font-weight: bold;";
+            // TODO: Change above to be its own function to allow for styling
+          } else{
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var weeks = Math.floor(days/7);
+            days = days % 7;
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById(deadlines[i].spanId).innerHTML = weeks + " Weeks " + days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds";
+          }
+        }
+      },1000);
+
+      function DLTitleCLick(indexNum){
+        // TODO: Better formating on alert
+        var date = deadlines[indexNum].dl;
+        var dateTime = date.toLocaleTimeString().split(":");
+        alert(
+          "Exam on " + date.toDateString() + " at " + dateTime[0] + ":" + dateTime[1]
+        );
+
+      }
+
+      function imgOver(text){
+        document.getElementById("websiteHover").innerHTML = text;
+      }
+
+      function imgOut(){
+        document.getElementById("websiteHover").innerHTML = "";
+        console.log("test");
+      }
+
+    </script>
+  </head>
+  <body onload="writeCountDownArea()">
+
+
+    <!-- <h1>Exam Countdown</h1> -->
+
+    <!-- <span id="countdownArea">
+      JS Failed to load deadlines
+    </span> -->
+    <table align="center">
+      <tr>
+        <td><a href="http://www.netflix.com"><img onmouseover="imgOver(this.alt)" onmouseout="imgOut()" src="https://www.userlogos.org/files/netflix-n-logo-png.png" id="netflixImg" alt="Netflix"></a></td>
+        <td><a href="http://www.youtube.com"><img onmouseover="imgOver(this.alt)" onmouseout="imgOut()" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/youtube_circle-256.png" id="youtubeImg" alt="YouTube"></a></td>
+        <td><a href="http://www.amazon.co.uk"><img onmouseover="imgOver(this.alt)" onmouseout="imgOut()" src="data:image/png;base64,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" id="amazonImg" alt="Amazon"</a></td>
+        <td><a href="http://www.reddit.com"><img onmouseover="imgOver(this.alt)" onmouseout="imgOut()" src="https://www.shareicon.net/data/512x512/2015/09/30/109351_media_512x512.png" id="redditImg" alt="Reddit"</a></td>
+        <td><a href="https://www.facebook.com/messages/t/"><img onmouseover="imgOver(this.alt)" onmouseout="imgOut()" src="https://www.shareicon.net/data/512x512/2017/02/01/877514_media_512x512.png" id="messengerImg" alt="Messenger"</a></td>
+        <td><a href="https://learningcentral.cf.ac.uk/webapps/login/?action=relogin"><img onmouseover="imgOver(this.alt)" onmouseout="imgOut()" src="https://i0.wp.com/wirthconsulting.org/wp-content/uploads/2017/03/blackboard_learn1.png?fit=432%2C432&ssl=1" id="blackboardImg" alt="BlackBoard"</a></td>
+      </tr>
+      <tr>
+        <td><a href="https://www.humblebundle.com"><img onmouseover="imgOver(this.alt)" onmouseout="imgOut()" src="http://www.pcgameshardware.de/screenshots/original/2017/12/Humble.png" alt="Humble Bundle" id="hbImg"</a></td>
+        <td><a href="http://store.steampowered.com/"><img onmouseover="imgOver(this.alt)" onmouseout="imgOut()" alt="Steam" src="data:image/png;base64,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" id="steamImg"</a></td>
+        <td><a href="https://chrono.gg/"><img onmouseover="imgOver(this.alt)" onmouseout="imgOut()" src="https://wiki.gamedetectives.net/images/3/34/Chrono_logo.png" alt="Chrono" id="chronoImg"></a></td>
+        <td><a href="http://www.outlook.com"><img onmouseover="imgOver(this.alt)" onmouseout="imgOut()" src="http://icons.iconarchive.com/icons/martz90/circle/512/outlook-icon.png" id="outlookImg" alt="Outlook"></a></td>
+        <td><a href="http://calendar.google.com"><img onmouseover="imgOver(this.alt)" onmouseout="imgOut()" src="https://www.shareicon.net/data/2016/11/09/851426_calendar_512x512.png" id="gcImg" alt="Google Cal"></a></td>
+        <td><a href="http://www.google.com"><img onmouseover="imgOver(this.alt)" onmouseout="imgOut()" src="https://i.stack.imgur.com/Ga0da.png" alt="Google" id="googleImg"></a></td>
+      </tr>
+      <tr>
+        <td colspan="6" id="websiteHover"></td>
+      </tr>
+    </table>
+
+  </body>
+</html>
