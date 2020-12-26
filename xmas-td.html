@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>XMAS TD</title>
+    <style>
+      .DLDeadlineP{
+        cursor: pointer;
+      }
+      .DLName{
+        font-weight: bold;
+      }
+      body{
+        font-family: Arial;
+        background-image: url('cabin.png');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        font-size: 25pt;
+        color: red;
+      }
+      #countdownArea{
+        text-align: center;
+      }
+      h1{
+        text-align: center;
+        font-size: 100pt;
+        color: red;
+      }
+      </style>
+      <script>
+        var infomaticsDL = new Date("may 21, 2018, 13:00:00");
+        // alert(infomaticsDL);
+        function newDeadline(name, dl, span){
+          var obj = {};
+          obj.name = name;
+          obj.dl = dl;
+          obj.spanId = span;
+          return obj;
+        }
+
+        var deadlines = [
+          newDeadline("",new Date("Dec 30, 2020, 22:00:00"),"infomaticsDLArea"),
+          ];
+        function writeCountDownArea(){
+          var deadlinesToBePrinted = "";
+          for(n=0;n<deadlines.length;n++){
+            deadlinesToBePrinted += "<p><span class='DLDeadlineP' title='Show date' onclick='DLTitleCLick(" + n + ")'><span class='DLName' >" + deadlines[n].name + " </span><span id='" + deadlines[n].spanId + "'></span></span></p>";
+          }
+          document.getElementById("countdownArea").innerHTML = deadlinesToBePrinted;
+        }
+        var x = setInterval(function(){
+          var now = new Date().getTime();
+          for(i=0; i<deadlines.length; i++){
+            var distance = deadlines[i].dl.getTime() - now;
+            if(distance<0){
+              document.getElementById(deadlines[i].spanId).innerHTML = "Deadline Passed";
+              document.getElementById(deadlines[i].spanId).style = "color :rgb(58, 181, 55); font-weight: bold;";
+              // TODO: Change above to be its own function to allow for styling
+            } else{
+              var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+              var weeks = Math.floor(days/7);
+              days = days % 7;
+              var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+              var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+              var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+              document.getElementById(deadlines[i].spanId).innerHTML =  days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds";
+            }
+          }
+        },1000);
+
+        function DLTitleCLick(indexNum){
+          // TODO: Better formating on alert
+          window.location.href = 'https://exception-thrown.itch.io/';
+
+        }
+
+        function imgOver(text){
+          document.getElementById("websiteHover").innerHTML = text;
+        }
+
+        function imgOut(){
+          document.getElementById("websiteHover").innerHTML = "";
+          console.log("test");
+        }
+
+      </script>
+
+
+</head>
+
+
+      <body onload="writeCountDownArea()">
+
+
+        <!-- <h1>Exam Countdown</h1> -->
+
+        <h1> XMAS TD </h1>
+
+        <span id="countdownArea">
+          JS Failed to load deadlines
+        </span>
